@@ -36,6 +36,8 @@
 
         drawEmptyCells: true,
 
+        valueDrawEmptyCells: null,
+
         rawNumberOnHover: true,
 
         displayAbsoluteValues: false,
@@ -186,6 +188,8 @@
                         return (value / base * 100).toFixed(2);
                     } else if (isNumber(value)) {
                         return "0.00";
+                    } else if (value === config.valueDrawEmptyCells){
+                        return value;
                     }
                 },
 
@@ -228,7 +232,12 @@
                         cellValue = j === 0 || config.displayAbsoluteValues ? value : formattedPercentage,
                         opts = {};
 
-                        if (!isEmpty(cellValue)) {
+                        if(config.valueDrawEmptyCells === cellValue) {
+                            opts = {
+                                text: '-',
+                                className: j === 0 ? 'people' : 'empty'
+                            };
+                        } else if (!isEmpty(cellValue)) {
                             opts = {
                                 text: cellValue,
                                 title: j > 0 && config.rawNumberOnHover ? value : null,
